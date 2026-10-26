@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Río de Números</title>
+<meta name="description" content="Ahorcado de matemáticas y física para los CLEI 1 a 6: cruza el río Guamuez en balsa adivinando conceptos de cada ciclo.">
+<meta name="theme-color" content="#0c1613">
+<meta property="og:title" content="Río de Números">
+<meta property="og:description" content="Ahorcado de matemáticas y física para los CLEI 1 a 6, ambientado en el Putumayo.">
+<meta property="og:image" content="assets/vista-previa.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Río de <span>Números</span></h1>
+      <p>Ahorcado de matemáticas y física para los CLEI · Cruza el río Guamuez antes de que llegue la tormenta</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><small>Puntos</small></div>
+      <div class="stat"><b id="streak">0</b><small>Racha</small></div>
+      <div class="stat"><b id="solved">0</b><small>Resueltas</small></div>
+      <div class="stat"><b id="best">0</b><small>Récord</small></div>
+    </div>
+  </header>
+
+  <section class="setup" aria-label="Ciclo y área">
+    <div class="setup-group">
+      <div class="eyebrow">Ciclo</div>
+      <div class="ciclos" id="ciclos" role="group" aria-label="Ciclo"></div>
+    </div>
+    <div class="setup-group">
+      <div class="eyebrow">Área</div>
+      <div class="areas" id="areas" role="group" aria-label="Área"></div>
+    </div>
+  </section>
+
+  <section class="stage" aria-label="Escena del río">
+    <canvas id="scene" aria-hidden="true"></canvas>
+    <div class="hud">
+      <div class="lives"><small>Troncos de la balsa</small><div class="logs" id="logs"></div><small class="tripLbl">Travesía</small><div class="trip"><span id="trip"></span></div></div>
+      <div class="tag"><small id="tagNivel">CLEI</small><span id="catTag">Tema</span></div>
+    </div>
+    <div class="banner" id="banner" hidden>
+      <h2 id="bannerTitle"></h2>
+      <p id="bannerText"></p>
+      <button class="btn primary" id="nextBtn">Siguiente palabra</button>
+    </div>
+  </section>
+
+  <section class="play">
+    <div class="card">
+      <div class="eyebrow" id="clueCat">Pista</div>
+      <p class="clue" id="clue"></p>
+      <div class="word" id="word" aria-live="polite"></div>
+      <div class="wrong">Letras fallidas: <span id="wrongList">—</span></div>
+      <div class="actions">
+        <button class="btn primary" id="retoBtn">Reto del río (2)</button>
+        <button class="btn" id="skipBtn">Cambiar palabra</button>
+      </div>
+      <p class="wrong" style="margin:0">Cada acierto hace avanzar la balsa hacia el muelle. Cada error parte un tronco. El <b>Reto del río</b> te pone un problema. Si aciertas, se destapa una letra. Si fallas, la balsa pierde un tronco.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Elige una letra</div>
+      <div class="kb" id="kb"></div>
+      <p class="kbhint">También puedes usar el teclado del computador.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow" id="temasTitle" style="margin-bottom:8px">Temas</div>
+    <div class="temas" id="temas"></div>
+  </section>
+
+  <details class="docente">
+    <summary>Para el docente</summary>
+    <p>El juego sigue la organización por Ciclos Lectivos Especiales Integrados de la educación de jóvenes y adultos (Decreto 3011 de 1997, compilado en el Decreto 1075 de 2015). Los temas de matemáticas siguen los Estándares Básicos de Competencias en Matemáticas. En física, los CLEI 1 a 4 trabajan el entorno físico de los Estándares de Ciencias Naturales, y los CLEI 5 y 6 corresponden a la asignatura de física de la media.</p>
+    <div class="tabla"><table id="tablaCiclos"></table></div>
+    <ul>
+      <li>Cada palabra trae una pista con la definición del concepto. Pida al estudiante que explique en voz alta por qué la palabra encaja.</li>
+      <li>Los problemas del Reto del río usan situaciones del Putumayo: cosechas, lanchas, veredas, piscicultura, el recibo de la luz. Al responder, aparece la explicación del procedimiento.</li>
+      <li>Para trabajo en grupo: proyecte el juego, divida el salón en equipos y alterne turnos por letra.</li>
+      <li>Para abrir el juego directamente en un ciclo, agregue al final de la dirección <code>#clei4-fisica</code>, <code>#clei2-matematicas</code> o la combinación que necesite.</li>
+    </ul>
+  </details>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="retoTitle">
+    <h3 id="retoTitle">Reto del río</h3>
+    <p class="q" id="retoQ"></p>
+    <div class="opts" id="retoOpts"></div>
+    <p class="feedback" id="retoFb" hidden></p>
+    <div class="actions"><button class="btn" id="retoClose">Volver al juego</button></div>
+  </div>
+</div>
+
+<script src="js/contenido.js" defer></script>
+<script src="js/escena.js" defer></script>
+<script src="js/juego.js" defer></script>
+</body>
+</html>
