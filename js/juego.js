@@ -2,6 +2,7 @@
 const $=id=>document.getElementById(id);
 const norm=s=>s.toUpperCase().replace(/Ñ/g,'#').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/#/g,'Ñ');
 const AREA_SLUG={mat:'matematicas',fis:'fisica'};
+const AREA_SHORT={mat:'Mat.',fis:'Física'};
 const st={ciclo:3,area:'mat',cat:'all',w:null,guessed:new Set(),wrong:new Set(),errors:0,retos:0,status:'play',
   score:0,streak:0,solved:0,best:0,used:new Set(),usedP:new Set()};
 
@@ -31,6 +32,7 @@ function paintSel(){
   const c=ciclo();
   $('temasTitle').textContent=`Temas de ${c.nombre} · ${AREAS[st.area]}`;
   $('tagNivel').textContent=`${c.nombre} · ${AREAS[st.area]}`;
+  $('menuLbl').textContent=`${c.nombre} · ${AREA_SHORT[st.area]}`;
   const chips=[['all','Todos los temas'],...Object.entries(bank().temas)];
   $('temas').innerHTML=chips.map(([k,v])=>`<button class="chip" data-c="${k}" aria-pressed="false">${v}</button>`).join('');
   paintTemas();
@@ -52,6 +54,7 @@ $('kb').innerHTML=ROWS.map(r=>`<div class="row">${[...r].map(l=>`<button class="
 $('kb').addEventListener('click',e=>{const b=e.target.closest('.key');if(b)guess(b.dataset.l)});
 document.addEventListener('keydown',e=>{
   if(!$('modal').hidden){if(e.key==='Escape')closeReto();return}
+  if(panelOpen()){if(e.key==='Escape')closePanel();return}
   if(e.ctrlKey||e.metaKey||e.altKey)return;
   const l=norm(e.key);if(/^[A-ZÑ]$/.test(l)){guess(l);e.preventDefault()}
   else if(e.key==='Enter'&&st.status!=='play'&&e.target.tagName!=='BUTTON'){next()}
@@ -91,9 +94,10 @@ function render(){
   $('wrongList').textContent=st.wrong.size?[...st.wrong].join(' '):'—';
   $('logs').innerHTML=Array.from({length:MAX_ERR},(_,i)=>`<i class="${i<MAX_ERR-st.errors?'':'off'}"></i>`).join('');
   $('trip').style.width=(progress()*100)+'%';
-  $('retoBtn').textContent=`Reto del río (${MAX_RETO-st.retos})`;
+  $('retoBtn').innerHTML=`<span class="lgOnly">Reto del río</span><span class="smOnly">Reto</span> (${MAX_RETO-st.retos})`;
+  $('keysCard').classList.toggle('done',done);
   $('retoBtn').disabled=done||st.retos>=MAX_RETO;
-  $('score').textContent=st.score;$('streak').textContent=st.streak;$('solved').textContent=st.solved;$('best').textContent=st.best;
+  $('score').textContent=st.score;$('scoreMini').textContent=st.score;$('streak').textContent=st.streak;$('solved').textContent=st.solved;$('best').textContent=st.best;
 }
 function guess(l,fromReto){
   if(st.status!=='play'||st.guessed.has(l)||st.wrong.has(l))return;
@@ -111,7 +115,7 @@ function guess(l,fromReto){
   }
   render();
 }
-function miss(){st.errors++;Scene.setErrors(st.errors);Scene.bad();if(st.errors>=MAX_ERR)lose()}
+function miss(){try{navigator.vibrate&&navigator.vibrate(35)}catch(e){}st.errors++;Scene.setErrors(st.errors);Scene.bad();if(st.errors>=MAX_ERR)lose()}
 function win(){
   st.status='won';const bonus=50+(MAX_ERR-st.errors)*10;st.score+=bonus;st.streak++;st.solved++;
   saveBest();Scene.win();
@@ -157,6 +161,22 @@ $('retoOpts').addEventListener('click',e=>{
 function closeReto(){$('modal').hidden=true}
 $('retoBtn').onclick=openReto;$('retoClose').onclick=closeReto;
 $('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeReto()});
+
+/* ---------- panel de ajustes (en el teléfono sube desde abajo) ---------- */
+const panelOpen=()=>$('panel').classList.contains('open');
+function openPanel(){
+  $('panel').classList.add('open');$('scrim').hidden=false;$('menuBtn').setAttribute('aria-expanded','true');
+  $('panel').setAttribute('role','dialog');$('panel').setAttribute('aria-modal','true');
+  setTimeout(()=>$('panelClose').focus({preventScroll:true}),60);
+}
+function closePanel(){
+  if(!panelOpen())return;
+  $('panel').classList.remove('open');$('scrim').hidden=true;$('menuBtn').setAttribute('aria-expanded','false');
+  $('panel').removeAttribute('role');$('panel').removeAttribute('aria-modal');
+  $('menuBtn').focus({preventScroll:true});
+}
+$('menuBtn').onclick=openPanel;$('panelClose').onclick=closePanel;$('panelGo').onclick=closePanel;$('scrim').onclick=closePanel;
+matchMedia('(min-width:761px) and (min-height:521px)').addEventListener?.('change',e=>{if(e.matches)closePanel()});
 
 /* ---------- sección del docente: tabla de contenidos por ciclo ---------- */
 $('tablaCiclos').innerHTML=`<thead><tr><th>Ciclo</th><th>Grados</th><th>Matemáticas</th><th>Física</th></tr></thead><tbody>${

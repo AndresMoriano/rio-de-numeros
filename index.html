@@ -21,26 +21,16 @@
   <header class="top">
     <div class="brand">
       <h1>Río de <span>Números</span></h1>
-      <p>Ahorcado de matemáticas y física para los CLEI · Cruza el río Guamuez antes de que llegue la tormenta</p>
+      <p class="sub">Ahorcado de matemáticas y física para los CLEI · Cruza el río Guamuez antes de que llegue la tormenta</p>
     </div>
-    <div class="stats">
-      <div class="stat"><b id="score">0</b><small>Puntos</small></div>
-      <div class="stat"><b id="streak">0</b><small>Racha</small></div>
-      <div class="stat"><b id="solved">0</b><small>Resueltas</small></div>
-      <div class="stat"><b id="best">0</b><small>Récord</small></div>
+    <div class="mbar">
+      <span class="mini" aria-label="Puntos"><b id="scoreMini">0</b> pts</span>
+      <button class="menuBtn" id="menuBtn" aria-controls="panel" aria-expanded="false">
+        <span id="menuLbl">CLEI 3 · Mat.</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
     </div>
   </header>
-
-  <section class="setup" aria-label="Ciclo y área">
-    <div class="setup-group">
-      <div class="eyebrow">Ciclo</div>
-      <div class="ciclos" id="ciclos" role="group" aria-label="Ciclo"></div>
-    </div>
-    <div class="setup-group">
-      <div class="eyebrow">Área</div>
-      <div class="areas" id="areas" role="group" aria-label="Área"></div>
-    </div>
-  </section>
 
   <section class="stage" aria-label="Escena del río">
     <canvas id="scene" aria-hidden="true"></canvas>
@@ -48,37 +38,63 @@
       <div class="lives"><small>Troncos de la balsa</small><div class="logs" id="logs"></div><small class="tripLbl">Travesía</small><div class="trip"><span id="trip"></span></div></div>
       <div class="tag"><small id="tagNivel">CLEI</small><span id="catTag">Tema</span></div>
     </div>
-    <div class="banner" id="banner" hidden>
-      <h2 id="bannerTitle"></h2>
-      <p id="bannerText"></p>
-      <button class="btn primary" id="nextBtn">Siguiente palabra</button>
-    </div>
   </section>
 
   <section class="play">
-    <div class="card">
+    <div class="card clueCard">
       <div class="eyebrow" id="clueCat">Pista</div>
       <p class="clue" id="clue"></p>
       <div class="word" id="word" aria-live="polite"></div>
-      <div class="wrong">Letras fallidas: <span id="wrongList">—</span></div>
-      <div class="actions">
-        <button class="btn primary" id="retoBtn">Reto del río (2)</button>
-        <button class="btn" id="skipBtn">Cambiar palabra</button>
+      <div class="row2">
+        <div class="wrong"><span class="lgOnly">Letras fallidas:</span><span class="smOnly">Fallidas:</span> <span id="wrongList">—</span></div>
+        <div class="actions">
+          <button class="btn primary" id="retoBtn">Reto del río (2)</button>
+          <button class="btn" id="skipBtn">Otra palabra</button>
+        </div>
       </div>
-      <p class="wrong" style="margin:0">Cada acierto hace avanzar la balsa hacia el muelle. Cada error parte un tronco. El <b>Reto del río</b> te pone un problema. Si aciertas, se destapa una letra. Si fallas, la balsa pierde un tronco.</p>
+      <p class="howto lgOnly">Cada acierto hace avanzar la balsa hacia el muelle. Cada error parte un tronco. El <b>Reto del río</b> te pone un problema. Si aciertas, se destapa una letra. Si fallas, la balsa pierde un tronco.</p>
     </div>
-    <div class="card">
-      <div class="eyebrow">Elige una letra</div>
+    <div class="card keysCard" id="keysCard">
+      <div class="eyebrow lgOnly">Elige una letra</div>
       <div class="kb" id="kb"></div>
-      <p class="kbhint">También puedes usar el teclado del computador.</p>
+      <p class="kbhint lgOnly">También puedes usar el teclado del computador.</p>
+      <div class="banner" id="banner" hidden>
+        <h2 id="bannerTitle"></h2>
+        <p id="bannerText"></p>
+        <button class="btn primary" id="nextBtn">Siguiente palabra</button>
+      </div>
     </div>
   </section>
 
-  <section>
-    <div class="eyebrow" id="temasTitle" style="margin-bottom:8px">Temas</div>
-    <div class="temas" id="temas"></div>
-  </section>
-
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="panel" id="panel" aria-label="Ajustes del juego">
+    <div class="sheetHead">
+      <h2>Ajustes</h2>
+      <button class="iconBtn" id="panelClose" aria-label="Cerrar ajustes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><small>Puntos</small></div>
+      <div class="stat"><b id="streak">0</b><small>Racha</small></div>
+      <div class="stat"><b id="solved">0</b><small>Resueltas</small></div>
+      <div class="stat"><b id="best">0</b><small>Récord</small></div>
+    </div>
+    <section class="setup" aria-label="Ciclo y área">
+      <div class="setup-group">
+        <div class="eyebrow">Ciclo</div>
+        <div class="ciclos" id="ciclos" role="group" aria-label="Ciclo"></div>
+      </div>
+      <div class="setup-group">
+        <div class="eyebrow">Área</div>
+        <div class="areas" id="areas" role="group" aria-label="Área"></div>
+      </div>
+    </section>
+    <section class="temasSec">
+      <div class="eyebrow" id="temasTitle" style="margin-bottom:8px">Temas</div>
+      <div class="temas" id="temas"></div>
+    </section>
+    <p class="howto smOnly">Cada acierto hace avanzar la balsa hacia el muelle. Cada error parte un tronco. El <b>Reto del río</b> te pone un problema: si aciertas, se destapa una letra; si fallas, la balsa pierde un tronco.</p>
   <details class="docente">
     <summary>Para el docente</summary>
     <p>El juego sigue la organización por Ciclos Lectivos Especiales Integrados de la educación de jóvenes y adultos (Decreto 3011 de 1997, compilado en el Decreto 1075 de 2015). Los temas de matemáticas siguen los Estándares Básicos de Competencias en Matemáticas. En física, los CLEI 1 a 4 trabajan el entorno físico de los Estándares de Ciencias Naturales, y los CLEI 5 y 6 corresponden a la asignatura de física de la media.</p>
@@ -90,6 +106,8 @@
       <li>Para abrir el juego directamente en un ciclo, agregue al final de la dirección <code>#clei4-fisica</code>, <code>#clei2-matematicas</code> o la combinación que necesite.</li>
     </ul>
   </details>
+    <div class="sheetFoot"><button class="btn primary" id="panelGo">Jugar</button></div>
+  </aside>
 </div>
 
 <div class="modal" id="modal" hidden>

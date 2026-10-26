@@ -13,6 +13,10 @@ Ahorcado de **matemáticas y física para los CLEI 1 a 6** (educación de jóven
 - **Reto del río** (2 por palabra): resuelve un problema del mismo tema con situaciones de la región. Si aciertas, se destapa una letra; si fallas, se pierde un tronco. Siempre se muestra la explicación del procedimiento.
 - Se puede filtrar por tema. El juego lleva puntos, racha y un récord por ciclo y área, que se guarda en el navegador.
 
+### En el teléfono
+
+En el celular el juego cabe en una sola pantalla, sin desplazarse: arriba la escena del río, en el medio la pista y la palabra, y abajo un teclado grande fijo. El botón **CLEI · Área** de la esquina superior abre el panel para cambiar de ciclo, área o tema, ver los puntajes y leer las notas para el docente. El Reto del río aparece como una hoja que sube desde abajo. También funciona con el teléfono acostado.
+
 ## Contenido por ciclo
 
 | Ciclo | Grados | Matemáticas | Física |
